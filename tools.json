@@ -1,0 +1,98 @@
+# ============================================================
+# Tools 注册 — name → (function, OpenAI function schema)
+# ============================================================
+TOOLS = {
+    "shell_exec": {
+        "function": shell_exec,
+        "schema": {
+            "type": "function",
+            "function": {
+                "name": "shell_exec",
+                "description": "Execute a shell command and return its output.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "command": {
+                            "type": "string",
+                            "description": "The shell command to execute.",
+                        }
+                    },
+                    "required": ["command"],
+                },
+            },
+        },
+    },
+    "file_read": {
+        "function": file_read,
+        "schema": {
+            "type": "function",
+            "function": {
+                "name": "file_read",
+                "description": "Read the contents of a file at the given path.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "Absolute or relative file path.",
+                        }
+                    },
+                    "required": ["path"],
+                },
+            },
+        },
+    },
+    "file_write": {
+        "function": file_write,
+        "schema": {
+            "type": "function",
+            "function": {
+                "name": "file_write",
+                "description": "Write content to a file (creates parent directories if needed).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "Absolute or relative file path.",
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Content to write.",
+                        },
+                    },
+                    "required": ["path", "content"],
+                },
+            },
+        },
+    },
+    "python_exec": {
+        "function": python_exec,
+        "schema": {
+            "type": "function",
+            "function": {
+                "name": "python_exec",
+                "description": "Execute Python code in a subprocess and return its output.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string",
+                            "description": "Python source code to execute.",
+                        }
+                    },
+                    "required": ["code"],
+                },
+            },
+        },
+    },
+}
+
+SYSTEM_PROMPT = """You are a helpful AI assistant with access to the following tools:
+1. shell_exec — run shell commands
+2. file_read — read file contents
+3. file_write — write content to a file
+4. python_exec — execute Python code
+Think step by step. Use tools when you need to interact with the file system, \
+run commands, or execute code. When the task is complete, respond directly \
+without calling any tool."""
